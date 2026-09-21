@@ -1,3 +1,36 @@
+# Proposed Architecture
+┌─────────────────────────┐
+│ Playwright + Cucumber   │
+│ BDD Test Execution      │
+└──────────┬──────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│ Playwright HTML Report  │
+│ Trace.zip              │
+│ Video                  │
+│ Screenshots            │
+└──────────┬──────────────┘
+           │
+           ▼
+┌─────────────────────────┐
+│ AI Failure Analyzer     │
+│ Custom Agent           │
+└──────────┬──────────────┘
+           │
+ ┌─────────┴──────────┐
+ │                    │
+ ▼                    ▼
+
+Locator Failure     Product Failure
+(Element Missing)   (Bug in App)
+
+ ▼                    ▼
+
+Self-Healing       Bug Creation
+Locator Update     Jira/Azure DevOps
+Code Commit        Ticket Creation
+
 # Playwright + Cucumber BDD: Sauce Demo
 
 A public-repository-ready TypeScript framework for testing [Sauce Demo](https://sauce-demo.myshopify.com/) with Playwright browser automation and Cucumber BDD.
