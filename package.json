@@ -1,0 +1,29 @@
+{
+  "name": "playwright-cucumber-sauce-demo",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Public starter framework using Playwright, Cucumber BDD, TypeScript, POM, reports, and intentional failure examples.",
+  "scripts": {
+    "clean": "rimraf reports test-results",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run clean && cucumber-js --tags 'not @known_failure'",
+    "test:smoke": "npm run clean && cucumber-js --tags '@smoke and not @known_failure'",
+    "test:known-failures": "npm run clean && cucumber-js --tags '@known_failure'",
+    "test:all": "npm run clean && cucumber-js",
+    "report": "node scripts/generate-report.js",
+    "posttest": "npm run report",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.3.0",
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^22.15.0",
+    "multiple-cucumber-html-reporter": "^3.9.0",
+    "prettier": "^3.5.0",
+    "rimraf": "^6.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.0"
+  },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}

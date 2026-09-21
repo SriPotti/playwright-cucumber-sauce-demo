@@ -1,0 +1,12 @@
+import { Given, Then } from '@cucumber/cucumber';
+import { CustomWorld } from '../support/world';
+import { CartPage } from '../pages/CartPage';
+
+const cart = (world: CustomWorld) => {
+  if (!world.page) throw new Error('Page was not initialized');
+  return new CartPage(world.page);
+};
+Given('I open the cart', async function (this: CustomWorld) { await cart(this).open(); });
+Then('the cart should be empty', async function (this: CustomWorld) { await cart(this).expectEmpty(); });
+Then('I should see a continue shopping link', async function (this: CustomWorld) { await cart(this).expectContinueShopping(); });
+Then('the application should show a populated cart', async function (this: CustomWorld) { await cart(this).expectPopulated(); });
