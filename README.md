@@ -1,35 +1,8 @@
 # Proposed Architecture
-┌─────────────────────────┐
-│ Playwright + Cucumber   │
-│ BDD Test Execution      │
-└──────────┬──────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│ Playwright HTML Report  │
-│ Trace.zip              │
-│ Video                  │
-│ Screenshots            │
-└──────────┬──────────────┘
-           │
-           ▼
-┌─────────────────────────┐
-│ AI Failure Analyzer     │
-│ Custom Agent           │
-└──────────┬──────────────┘
-           │
- ┌─────────┴──────────┐
- │                    │
- ▼                    ▼
+Proposed Architecture
+<img width="487" height="687" alt="Screenshot 2026-09-21 at 5 32 06 PM" src="https://github.com/user-attachments/assets/14b772e2-35f8-4d27-b8ae-3b86de975f2f" />
 
-Locator Failure     Product Failure
-(Element Missing)   (Bug in App)
 
- ▼                    ▼
-
-Self-Healing       Bug Creation
-Locator Update     Jira/Azure DevOps
-Code Commit        Ticket Creation
 
 # Playwright + Cucumber BDD: Sauce Demo
 
