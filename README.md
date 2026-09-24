@@ -48,6 +48,41 @@ npm run typecheck
 
 Open `reports/cucumber-report.html` for Cucumber's built-in report. The post-test script also creates the richer report under `reports/html/` when the standard `npm test` command reaches `posttest`.
 
+## QA-Fix connection
+
+This repo depends on the local [`qa-fix`](../../qaFixAIAgent/qa-fix) CLI. After `npm install`, a failed scenario:
+
+1. Writes `test-results/<scenario>-trace.zip` (already enabled in hooks).
+2. Runs `qafix fix` on that zip.
+3. Attaches the diagnosis to the Cucumber report and writes `reports/qafix/<scenario>.txt`.
+
+`qafix` reads Playwright traces only. Cucumber JSON/HTML reports stay with this project.
+
+```bash
+npm install
+npm run test:known-failures
+
+# diagnose every zip under test-results/ (default)
+npm run qafix
+
+# diagnose one zip
+npm run qafix:trace -- test-results/demonstrate-an-incorrect-locator-trace.zip
+
+# diagnose a folder of zips (Playwright-style test-results/<test>/trace.zip also works)
+npm run qafix:trace -- test-results
+```
+
+From the **qa-fix** repo you can point at the same file:
+
+```bash
+cd "/Users/c8v6gq/Library/CloudStorage/OneDrive-CIGNA/Desktop/Automation_Framewroks/qaFixAIAgent/qa-fix"
+node dist/bin/qafix.js fix "/Users/c8v6gq/Library/CloudStorage/OneDrive-CIGNA/Desktop/Automation_Framewroks/Hackethon/playwright-cucumber-sauce-demo/test-results/<scenario>-trace.zip"
+```
+
+Skip diagnosis with `QAFIX_SKIP=1`. Point at another CLI with `QAFIX_BIN=/path/to/qafix.js`.
+
+qafix prints the failing action, selector, and a compact DOM tree. It does not edit step definitions or claim a verified fix.
+
 ## Why the failing tests are separated
 
 `features/known_failures.feature` is intentionally red. It demonstrates:

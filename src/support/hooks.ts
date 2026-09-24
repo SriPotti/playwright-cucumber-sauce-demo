@@ -1,5 +1,7 @@
+import { mkdirSync } from 'node:fs';
 import { After, Before, Status, setDefaultTimeout } from '@cucumber/cucumber';
 import { chromium, firefox, webkit } from '@playwright/test';
+import { runQafixOnTrace, saveQafixOutput } from './qafix';
 import { CustomWorld } from './world';
 
 setDefaultTimeout(30_000);
@@ -23,7 +25,14 @@ After(async function (this: CustomWorld, scenario) {
   if (failed) {
     const screenshot = await this.page.screenshot({ fullPage: true });
     await this.attach(screenshot, 'image/png');
-    await this.context.tracing.stop({ path: `test-results/${safeName}-trace.zip` });
+    mkdirSync('test-results', { recursive: true });
+    const tracePath = `test-results/${safeName}-trace.zip`;
+    await this.context.tracing.stop({ path: tracePath });
+    const diagnosis = runQafixOnTrace(tracePath);
+    if (diagnosis.trim()) {
+      saveQafixOutput(safeName, diagnosis);
+      await this.attach(diagnosis, 'text/plain');
+    }
   } else {
     await this.context.tracing.stop();
   }
