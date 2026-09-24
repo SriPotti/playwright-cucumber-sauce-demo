@@ -33,8 +33,19 @@ reports/                   Generated reports, ignored by Git
 
 ## Setup
 
+Link the local [`qa-fix`](../../qaFixAIAgent/qa-fix) CLI first (from that repo):
+
 ```bash
-npm install
+npm ci
+npm run build
+npm link
+```
+
+Then in this Playwright repo:
+
+```bash
+npm ci
+npm link qafix
 npx playwright install --with-deps chromium
 cp .env.example .env
 ```
@@ -55,7 +66,7 @@ Open `reports/cucumber-report.html` for Cucumber's built-in report. The post-tes
 
 ## QA-Fix connection
 
-This repo depends on the local [`qa-fix`](../../qaFixAIAgent/qa-fix) CLI. After `npm install`, a failed scenario:
+This repo depends on the local [`qa-fix`](../../qaFixAIAgent/qa-fix) CLI (`npm ci`, `npm run build`, `npm link` there, then `npm link qafix` here). After that, a failed scenario:
 
 1. Writes `test-results/<scenario>-trace.zip` (already enabled in hooks).
 2. Runs `qafix fix` on that zip.
@@ -64,7 +75,7 @@ This repo depends on the local [`qa-fix`](../../qaFixAIAgent/qa-fix) CLI. After 
 `qafix` reads Playwright traces only. Cucumber JSON/HTML reports stay with this project.
 
 ```bash
-npm install
+npm ci
 npm run test:known-failures
 
 # diagnose every zip under test-results/ (default)

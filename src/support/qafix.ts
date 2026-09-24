@@ -11,6 +11,10 @@ function qafixEntry(): string {
   );
 }
 
+function qafixPackageRoot(bin: string): string {
+  return path.resolve(path.dirname(bin), '..', '..');
+}
+
 export function runQafixOnTrace(tracePath: string): string {
   if (process.env.QAFIX_SKIP === '1') {
     return 'qafix skipped (QAFIX_SKIP=1)\n';
@@ -20,15 +24,16 @@ export function runQafixOnTrace(tracePath: string): string {
   if (!existsSync(bin)) {
     return [
       'qafix is not installed in this project.',
-      'From this repo run: npm install',
+      'In qa-fix run: npm ci && npm run build && npm link',
+      'In this Playwright repo run: npm link qafix',
       `Expected CLI at ${bin}`,
       ''
     ].join('\n');
   }
 
-  const result = spawnSync(process.execPath, [bin, 'fix', tracePath], {
+  const result = spawnSync(process.execPath, [bin, 'fix', path.resolve(tracePath)], {
     encoding: 'utf8',
-    cwd: process.cwd()
+    cwd: qafixPackageRoot(bin)
   });
   return `${result.stdout ?? ''}${result.stderr ?? ''}`;
 }

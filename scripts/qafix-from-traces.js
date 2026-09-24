@@ -50,12 +50,13 @@ function collectTraces(target) {
 const bin = resolveQafixBin();
 if (!existsSync(bin)) {
   console.error(
-    'qafix CLI not found. Build qa-fix (`npm run build` there) or run `npm install` in this project.'
+    'qafix CLI not found. In qa-fix run: npm ci && npm run build && npm link. In this Playwright repo run: npm link qafix.'
   );
   console.error(`Looked for ${bin}`);
   process.exit(1);
 }
 
+const qafixRoot = path.resolve(path.dirname(bin), '..', '..');
 const target = process.argv[2] || 'test-results';
 const traces = collectTraces(target);
 
@@ -69,9 +70,9 @@ if (traces.length === 0) {
 let failed = false;
 for (const tracePath of traces) {
   console.log(`\n=== qafix ${tracePath} ===`);
-  const result = spawnSync(process.execPath, [bin, 'fix', tracePath], {
+  const result = spawnSync(process.execPath, [bin, 'fix', path.resolve(tracePath)], {
     encoding: 'utf8',
-    cwd: process.cwd(),
+    cwd: qafixRoot,
     stdio: 'inherit'
   });
   if (result.status !== 0) failed = true;
