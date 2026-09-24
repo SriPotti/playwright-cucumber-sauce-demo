@@ -58,7 +58,8 @@ Environment variables are optional. The framework defaults to the public Sauce D
 npm test                    # normal tests, excludes known failures
 npm run test:smoke          # smoke suite
 npm run test:known-failures # deliberately failing examples
-npm run test:all            # everything
+npm run test:all            # every feature, including known failures
+npm run test:qafix          # full suite, then qafix 1.1–1.3 on every saved trace.zip
 npm run typecheck
 ```
 
@@ -76,15 +77,11 @@ This repo depends on the local [`qa-fix`](../../qaFixAIAgent/qa-fix) CLI (`npm c
 
 ```bash
 npm ci
-npm run test:known-failures
+npm run test:qafix            # every scenario, then qafix fix on each saved trace.zip
 
-# diagnose every zip under test-results/ (default)
+# diagnose leftover zips without re-testing
 npm run qafix
-
-# diagnose one zip
 npm run qafix:trace -- test-results/demonstrate-an-incorrect-locator-trace.zip
-
-# diagnose a folder of zips (Playwright-style test-results/<test>/trace.zip also works)
 npm run qafix:trace -- test-results
 ```
 
